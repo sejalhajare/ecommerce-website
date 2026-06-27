@@ -1,52 +1,67 @@
-import { useState, useEffect } from 'react';
-import Navbar from './components/Navbar';
-import Hero from './components/Hero';
-import About from './components/About';
-import Skills from './components/Skills';
-import Projects from './components/Projects';
-import Education from './components/Education';
-import Contact from './components/Contact';
-import Footer from './components/Footer';
+import React, { useEffect } from 'react';
+import { BrowserRouter, Routes, Route, Outlet, useLocation } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+import { AnimatePresence } from 'framer-motion';
 
-function App() {
-  const [darkMode, setDarkMode] = useState(() => {
-    // Check user preference or system preference on load
-    if (typeof window !== 'undefined') {
-      const savedMode = localStorage.getItem('theme');
-      if (savedMode) {
-        return savedMode === 'dark';
-      }
-      return window.matchMedia('(prefers-color-scheme: dark)').matches;
-    }
-    return true; // Default to dark mode based on project specs
-  });
+// Layout
+import Navbar from './components/layout/Navbar';
+import Footer from './components/layout/Footer';
 
-  useEffect(() => {
-    // Update document class when darkMode changes
-    const root = window.document.documentElement;
-    if (darkMode) {
-      root.classList.add('dark');
-      localStorage.setItem('theme', 'dark');
-    } else {
-      root.classList.remove('dark');
-      localStorage.setItem('theme', 'light');
-    }
-  }, [darkMode]);
+// Pages
+import Home from './pages/Home';
+import ProductList from './pages/ProductList';
+import ProductDetails from './pages/ProductDetails';
+import Cart from './pages/Cart';
+import Checkout from './pages/Checkout';
+import Profile from './pages/Profile';
+import AdminDashboard from './pages/AdminDashboard';
+import NotFound from './pages/NotFound';
+
+// Layout Wrapper
+const Layout = () => {
+  const location = useLocation();
+  const isAdmin = location.pathname.startsWith('/admin');
 
   return (
-    <div className="font-sans antialiased text-slate-900 bg-slate-50 dark:bg-dark-gradient dark:text-slate-50 min-h-screen transition-colors duration-300">
-      <Navbar darkMode={darkMode} setDarkMode={setDarkMode} />
-      <main>
-        <Hero />
-        <About />
-        <Skills />
-        <Projects />
-        <Education />
-        <Contact />
+    <div className="flex flex-col min-h-screen">
+      {!isAdmin && <Navbar />}
+      <main className="flex-grow">
+        <AnimatePresence mode="wait">
+          <Outlet key={location.pathname} />
+        </AnimatePresence>
       </main>
-      <Footer />
+      {!isAdmin && <Footer />}
     </div>
   );
-}
+};
+
+const App: React.FC = () => {
+  // Simple dark mode setup
+  useEffect(() => {
+    if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+      document.documentElement.classList.add('dark');
+    } else {
+      document.documentElement.classList.remove('dark');
+    }
+  }, []);
+
+  return (
+    <BrowserRouter>
+      <Toaster position="bottom-right" toastOptions={{ className: 'dark:bg-slate-800 dark:text-white' }} />
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="products" element={<ProductList />} />
+          <Route path="product/:id" element={<ProductDetails />} />
+          <Route path="cart" element={<Cart />} />
+          <Route path="checkout" element={<Checkout />} />
+          <Route path="profile" element={<Profile />} />
+          <Route path="admin" element={<AdminDashboard />} />
+          <Route path="*" element={<NotFound />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
+  );
+};
 
 export default App;
