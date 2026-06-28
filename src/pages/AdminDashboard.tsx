@@ -1,7 +1,7 @@
 import React from 'react';
 import { 
   BarChart3, Users, Package, ShoppingBag, 
-  TrendingUp, ArrowUpRight, ArrowDownRight, 
+  ArrowUpRight, ArrowDownRight, 
   DollarSign, Activity 
 } from 'lucide-react';
 import { useSelector } from 'react-redux';

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { RootState } from '../store/store';
 import { clearCart } from '../store/cartSlice';
 import { CheckCircle, MapPin, Truck, CreditCard, ChevronRight, Check } from 'lucide-react';
@@ -9,11 +9,10 @@ import toast from 'react-hot-toast';
 
 const Checkout: React.FC = () => {
   const dispatch = useDispatch();
-  const navigate = useNavigate();
   const { items, totalAmount, totalQuantity } = useSelector((state: RootState) => state.cart);
   
   const [step, setStep] = useState(1);
-  const [paymentMethod, setPaymentMethod] = useState('credit_card');
+  const [paymentMethod] = useState('credit_card');
   const [isSuccess, setIsSuccess] = useState(false);
 
   const shipping = totalAmount > 100 ? 0 : 15;

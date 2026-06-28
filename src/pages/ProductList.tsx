@@ -12,7 +12,7 @@ import {
 import { CATEGORIES, BRANDS } from '../data/mockData';
 import ProductCard from '../components/product/ProductCard';
 import DualRangeSlider from '../components/ui/DualRangeSlider';
-import { Filter, X, ChevronDown } from 'lucide-react';
+import { Filter, X, ChevronDown, Search } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 const ProductList: React.FC = () => {
