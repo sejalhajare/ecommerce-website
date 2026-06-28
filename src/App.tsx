@@ -16,6 +16,8 @@ import Checkout from './pages/Checkout';
 import Profile from './pages/Profile';
 import AdminDashboard from './pages/AdminDashboard';
 import NotFound from './pages/NotFound';
+import Login from './pages/Login';
+import Signup from './pages/Signup';
 
 // Layout Wrapper
 const Layout = () => {
@@ -57,6 +59,8 @@ const App: React.FC = () => {
           <Route path="checkout" element={<Checkout />} />
           <Route path="profile" element={<Profile />} />
           <Route path="admin" element={<AdminDashboard />} />
+          <Route path="login" element={<Login />} />
+          <Route path="signup" element={<Signup />} />
           <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
